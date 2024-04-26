@@ -1,8 +1,8 @@
 from cosmopower import cosmopower_NN
-import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
+import os
 
 
 
@@ -40,7 +40,6 @@ model_params = ['ns',
 
 cp_nn = cosmopower_NN(parameters=model_params,
                      modes= ell_range,
-                     n_hidden= [512, 512, 512, 512],
                      verbose=True
                      )
 
@@ -57,23 +56,7 @@ cp_nn.train(training_parameters=training_params,
               )
 
 
-cp_nn = cosmopower_NN(restore=True,
-                      restore_filename=filename_saved)
-                      
-predicted_testing_spectra = cp_nn.ten_to_predictions_np(TESTP)
 
-fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(50, 10))
-
-for i in range(3):
-  pred = predicted_testing_spectra[i]
-  true = testing_features[i]
-  ax[i].semilog(ell_range, true, 'blue', label = 'Original')
-  ax[i].semilog(ell_range, pred, 'red', label = 'NN', linestyle='--')
-  ax[i].set_xlabel('$l$', fontsize='x-large')
-  ax[i].set_ylabel('BB')
-  ax[i].legend(fontsize=15)
-plt.show()
-fig.savefig('testing.png')
 
 
 
